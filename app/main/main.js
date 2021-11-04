@@ -36,9 +36,9 @@ angular.module('web').controller('mainCtrl', [
     $scope.$on('$stateChangeSuccess', function() {
       var name = $state.current.name;
 
-      if (name != 'login') {
+      if (name !== 'login') {
         $rootScope.internalSupported =
-          (AuthInfo.get().eptpl || '').indexOf('-internal') != -1;
+          (AuthInfo.get().eptpl || '').indexOf('-internal') !== -1;
       }
     });
 

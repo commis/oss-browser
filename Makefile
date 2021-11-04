@@ -1,4 +1,3 @@
-
 VERSION=1.16.0
 NAME=oss-browser
 CUSTOM=./custom
@@ -12,8 +11,20 @@ ELECTRON_VERSION=1.8.4
 BUILD=ELECTRON_MIRROR=$(ELECTRON_MIRROR) $(PKGER) ./dist $(NAME) --asar --asar-unpack *.node --overwrite --out=build --version $(ELECTRON_VERSION) --app-version $(VERSION)
 ELECTON=./node_modules/.bin/electron
 
+define replace_depend
+	@echo "do depend replace copying ......"
+	@echo "$(0): Param => $(1), $(2), $(3)"
+	@if [ -d $(1) ]; then \
+		for subdir in "$(3)"; do \
+    		rm -rf "$(2)/$${subdir}"; \
+    		cp -rf "$(1)/$${subdir}" "$(2)/"; \
+    	done \
+	fi
+endef
+
 i:
-	cnpm i
+	cnpm i --force
+	$(call replace_depend,"../ali-oss","./node_modules/ali-oss","dist lib")
 clean:
 	rm -rf dist node_modules build releases node/crc64/cpp-addon/node_modules node/crc64/electron-crc64-prebuild/node_modules node/ossstore/node_modules
 dev:
@@ -31,8 +42,11 @@ watch:
 build:
 	$(GULP) build --custom=$(CUSTOM)
 	node gen.js
+dist-depend:
+	cd dist && cnpm install
+	$(call replace_depend,"../ali-oss","./dist/node_modules/ali-oss","dist lib")
 
-win64:
+win64: dist-depend
 	$(BUILD) --platform=win32 --arch=x64 --icon=$(CUSTOM)/icon.ico
 	cp -rf $(CUSTOM) build/$(NAME)-win32-x64/resources
 	rm -rf releases/$(VERSION)/$(NAME)-win32-x64.zip && mkdir -p releases/$(VERSION)
@@ -42,7 +56,7 @@ win32:
 	cp -rf $(CUSTOM) build/$(NAME)-win32-ia32/resources
 	rm -rf releases/$(VERSION)/$(NAME)-win32-ia32.zip && mkdir -p releases/$(VERSION)
 	cd build && $(ZIP) ../releases/$(VERSION)/$(NAME)-win32-ia32.zip $(NAME)-win32-ia32/
-linux64:
+linux64: dist-depend
 	$(BUILD) --platform=linux --arch=x64
 	cp -rf $(CUSTOM) build/$(NAME)-linux-x64/resources
 	rm -rf releases/$(VERSION)/$(NAME)-linux-x64.zip && mkdir -p releases/$(VERSION)
@@ -65,7 +79,8 @@ dmg:
 	#cp dist/icons/background.tiff build/$(NAME)-darwin-x64/.background
 	rm -f releases/$(VERSION)/$(NAME).dmg || continue
 	hdiutil create -size 250M -format UDZO -srcfolder build/$(NAME)-darwin-x64 -o releases/$(VERSION)/$(NAME).dmg
-all:win32 win64 linux32 linux64 mac asar
+#all:win32 win64 linux32 linux64 mac asar
+all: win64 linux64 mac
 	@echo 'Done'
 asar:
 	mkdir -p releases/$(VERSION)/darwin-x64 && cp build/$(NAME)-darwin-x64/$(NAME).app/Contents/Resources/app.asar releases/$(VERSION)/darwin-x64

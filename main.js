@@ -51,7 +51,7 @@ try {
 // be closed automatically when the JavaScript object is garbage collected.
 var win;
 
-if (process.platform == "darwin") {
+if (process.platform === "darwin") {
   app.dock.setIcon(
     custom.logo_png || path.join(__dirname, "icons", "icon.png")
   );
@@ -71,7 +71,7 @@ function createWindow() {
     },
   };
 
-  if (process.platform == "linux") {
+  if (process.platform === "linux") {
     opt.icon = custom.logo_png || path.join(__dirname, "icons", "icon.png");
   }
 
@@ -92,7 +92,7 @@ function createWindow() {
   });
 
   // drawin 就是 MacOS
-  if (process.env.NODE_ENV == "development") {
+  if (process.env.NODE_ENV === "development") {
     console.log("开发模式");
 
     // Open the DevTools.
@@ -146,7 +146,7 @@ ipcMain.on("asynchronous", (event, data) => {
 });
 
 function moveFile(from, to, fn) {
-  if (process.platform != "win32") {
+  if (process.platform !== "win32") {
     fs.rename(from, to, fn);
     return;
   }
