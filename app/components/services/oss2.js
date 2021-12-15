@@ -94,6 +94,8 @@ angular.module('web').factory('ossSvs2', [
       var options = prepaireOptions(opt);
       const OSS = require('ali-oss/dist/aliyun-oss-sdk');
       var client = new OSS({
+        deviceId: options.deviceId,
+        deviceSecret: options.deviceSecret,
         accessKeyId: options.accessKeyId,
         accessKeySecret: options.secretAccessKey,
         endpoint: options.endpoint,
@@ -111,6 +113,8 @@ angular.module('web').factory('ossSvs2', [
     function getClient3(opt) {
       const options = prepaireOptions(opt);
       const final = {
+        deviceId: options.deviceId,
+        deviceSecret: options.deviceSecret,
         accessKeyId: options.accessKeyId,
         accessKeySecret: options.secretAccessKey,
         bucket: opt.bucket,
@@ -1911,9 +1915,11 @@ angular.module('web').factory('ossSvs2', [
           endpointname
       );
 
-      console.log('[endpoint]:', endpoint);
+      // console.log('[endpoint]:', endpoint);
       const timeout = settingsSvs.connectTimeout.get();
       const options = {
+        deviceId: authInfo.did || 'a',
+        deviceSecret: authInfo.dsecret || 'a',
         // region: authInfo.region,
         accessKeyId: authInfo.id || 'a',
         secretAccessKey: authInfo.secret || 'a',
@@ -1924,10 +1930,10 @@ angular.module('web').factory('ossSvs2', [
         },
         maxRetries: 50,
         cname: authInfo.cname || false,
-        isRequestPayer: authInfo.requestpaystatus != 'NO'
+        isRequestPayer: authInfo.requestpaystatus !== 'NO'
       };
 
-      if (authInfo.id && authInfo.id.indexOf('STS.') == 0) {
+      if (authInfo.id && authInfo.id.indexOf('STS.') === 0) {
         options.securityToken = authInfo.stoken || null;
       }
 
@@ -1935,7 +1941,7 @@ angular.module('web').factory('ossSvs2', [
     }
 
     function parseOSSPath(ossPath) {
-      if (!ossPath || ossPath.indexOf(DEF_ADDR) == -1 || ossPath == DEF_ADDR) {
+      if (!ossPath || ossPath.indexOf(DEF_ADDR) === -1 || ossPath === DEF_ADDR) {
         return {};
       }
 
@@ -1944,7 +1950,7 @@ angular.module('web').factory('ossSvs2', [
       let bucket;
       let key;
 
-      if (ind == -1) {
+      if (ind === -1) {
         bucket = str;
         key = '';
       } else {
@@ -1962,7 +1968,7 @@ angular.module('web').factory('ossSvs2', [
     function getOssUrl(region, bucket, key) {
       var eptpl = AuthInfo.get().eptpl || 'http://{region}.aliyuncs.com';
 
-      var protocol = eptpl.indexOf('https:') == 0 ? 'https:' : 'http:'; // Global.ossEndpointProtocol == 'https:';
+      var protocol = eptpl.indexOf('https:') === 0 ? 'https:' : 'http:'; // Global.ossEndpointProtocol == 'https:';
 
       if (bucket && $rootScope.bucketMap && $rootScope.bucketMap[bucket]) {
         var endpoint =
@@ -1981,8 +1987,8 @@ angular.module('web').factory('ossSvs2', [
 
       // region是domain
       if (region) {
-        if (region.indexOf('.') != -1) {
-          if (region.indexOf('http') == -1) {
+        if (region.indexOf('.') !== -1) {
+          if (region.indexOf('http') === -1) {
             region = protocol + '//' + bucket + '.' + region + '/' + key;
           }
 
@@ -1996,7 +2002,7 @@ angular.module('web').factory('ossSvs2', [
  
       let domain;
 
-      if (eptpl.indexOf('https://') == 0) {
+      if (eptpl.indexOf('https://') === 0) {
         domain = eptpl.substring(8, eptpl.length);
         domain.replace(/\/$/, '');
 

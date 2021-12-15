@@ -37,6 +37,8 @@ module.exports = {
   "auth.tokenLogin": "トークンログイン",
   "auth.presetOssPath": "プリセット OSS パス",
   "auth.presetOssPath.placeholder": "オプション, 形式: oss://bucket/key/",
+  "auth.did.placeholder": "DeviceId",
+  "auth.dsecret.placeholder": "DeviceSecret",
   "auth.id.placeholder": "AccessKeyId",
   "auth.secret.placeholder": "AccessKeySecret",
   "auth.stoken.placeholder": "STS トークン",

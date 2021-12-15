@@ -26,12 +26,12 @@ i:
 	cnpm i --force
 	$(call replace_depend,"../ali-oss","./node_modules/ali-oss","dist lib")
 clean:
-	rm -rf dist node_modules build releases node/crc64/cpp-addon/node_modules node/crc64/electron-crc64-prebuild/node_modules node/ossstore/node_modules
+#	rm -rf dist node_modules build releases node/crc64/cpp-addon/node_modules node/crc64/electron-crc64-prebuild/node_modules node/ossstore/node_modules
+	rm -rf dist build releases
 dev:
 	NODE_ENV=development ${ELECTON} . --inspect=5858
 debug:
 	NODE_ENV=development ${ELECTON} . --inspect-brk=5858
-
 run:
 	custom=$(CUSTOM) npm run dev
 
@@ -42,11 +42,10 @@ watch:
 build:
 	$(GULP) build --custom=$(CUSTOM)
 	node gen.js
-dist-depend:
 	cd dist && cnpm install
 	$(call replace_depend,"../ali-oss","./dist/node_modules/ali-oss","dist lib")
 
-win64: dist-depend
+win64:
 	$(BUILD) --platform=win32 --arch=x64 --icon=$(CUSTOM)/icon.ico
 	cp -rf $(CUSTOM) build/$(NAME)-win32-x64/resources
 	rm -rf releases/$(VERSION)/$(NAME)-win32-x64.zip && mkdir -p releases/$(VERSION)
@@ -56,7 +55,7 @@ win32:
 	cp -rf $(CUSTOM) build/$(NAME)-win32-ia32/resources
 	rm -rf releases/$(VERSION)/$(NAME)-win32-ia32.zip && mkdir -p releases/$(VERSION)
 	cd build && $(ZIP) ../releases/$(VERSION)/$(NAME)-win32-ia32.zip $(NAME)-win32-ia32/
-linux64: dist-depend
+linux64:
 	$(BUILD) --platform=linux --arch=x64
 	cp -rf $(CUSTOM) build/$(NAME)-linux-x64/resources
 	rm -rf releases/$(VERSION)/$(NAME)-linux-x64.zip && mkdir -p releases/$(VERSION)
@@ -80,7 +79,7 @@ dmg:
 	rm -f releases/$(VERSION)/$(NAME).dmg || continue
 	hdiutil create -size 250M -format UDZO -srcfolder build/$(NAME)-darwin-x64 -o releases/$(VERSION)/$(NAME).dmg
 #all:win32 win64 linux32 linux64 mac asar
-all: win64 linux64 mac
+all: win64 linux64
 	@echo 'Done'
 asar:
 	mkdir -p releases/$(VERSION)/darwin-x64 && cp build/$(NAME)-darwin-x64/$(NAME).app/Contents/Resources/app.asar releases/$(VERSION)/darwin-x64

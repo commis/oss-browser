@@ -37,6 +37,8 @@ module.exports = {
   "auth.tokenLogin": "授权码登录",
   "auth.presetOssPath": "预设OSS路径",
   "auth.presetOssPath.placeholder": "可选,格式如: oss://bucket/key/",
+  "auth.did.placeholder": "请输入DeviceId",
+  "auth.dsecret.placeholder": "请输入DeviceSecret",
   "auth.id.placeholder": "请输入AccessKeyId",
   "auth.secret.placeholder": "请输入AccessKeySecret",
   "auth.stoken.placeholder": "请输入STS Token",

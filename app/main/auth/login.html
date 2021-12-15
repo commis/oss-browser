@@ -61,9 +61,42 @@
           name="form1"
           ng-submit="onSubmit(form1)"
         >
+          <div
+            class="form-group"
+            ng-class="{'has-error': !form1.did.$valid }"
+          >
+            <label for="did" class="col-sm-4 control-label"> DeviceId:</label>
+            <div class="col-sm-8">
+              <input
+                type="text"
+                ng-model="item.did"
+                class="form-control"
+                id="did"
+                name="did"
+                placeholder="{{'auth.did.placeholder'|translate}}"
+              />
+            </div>
+          </div>
+          <div
+            class="form-group"
+            ng-class="{'has-error': !form1.dsecret.$valid }"
+          >
+            <label for="dsecret" class="col-sm-4 control-label"> DeviceSecret:</label>
+            <div class="col-sm-8">
+              <input
+                type="password"
+                ng-model="item.dsecret"
+                class="form-control"
+                id="dsecret"
+                name="dsecret"
+                placeholder="{{'auth.dsecret.placeholder'|translate}}"
+              />
+            </div>
+          </div>
+
           <div class="form-group">
-            <label for="endpoint" class="col-sm-4 control-label"
-              ><span class="red">*</span> Endpoint:
+            <label for="endpoint" class="col-sm-4 control-label">
+              <span class="red">*</span> Endpoint:
               <span
                 uib-popover-template="'auth-endpoint-popup.html'"
                 popover-trigger="'mouseenter'"
@@ -73,9 +106,7 @@
               </span>
             </label>
             <div class="col-sm-8" style="padding: 0">
-              <div
-                ng-class="{'col-sm-9':eptplType=='default','col-sm-4':eptplType=='customize'||eptplType=='cname'}"
-              >
+              <div ng-class="{'col-sm-9':eptplType=='default','col-sm-4':eptplType=='customize'||eptplType=='cname'}">
                 <select
                   class="form-control"
                   ng-model="eptplType"
@@ -93,12 +124,7 @@
                 class="col-sm-3"
                 style="height: 34px"
               >
-                <label
-                  style="
-                    vertical-align: -webkit-baseline-middle;
-                    margin-bottom: 0;
-                  "
-                >
+                <label style="vertical-align: -webkit-baseline-middle;margin-bottom: 0;">
                   <input
                     type="checkbox"
                     ng-model="flags.secure"
@@ -147,13 +173,9 @@
               </div>
             </div>
           </div>
-          <div
-            class="form-group has-feedback"
-            ng-class="{'has-error': !form1.aid.$valid }"
-          >
-            <label for="aid" class="col-sm-4 control-label"
-              ><span class="red">*</span> AccessKeyId:</label
-            >
+          <div class="form-group has-feedback" ng-class="{'has-error': !form1.aid.$valid }">
+            <label for="aid" class="col-sm-4 control-label">
+              <span class="red">*</span> AccessKeyId:</label>
             <div class="col-sm-8">
               <input
                 type="text"
@@ -170,9 +192,8 @@
             class="form-group has-feedback"
             ng-class="{'has-error': !form1.akey.$valid }"
           >
-            <label for="akey" class="col-sm-4 control-label"
-              ><span class="red">*</span> AccessKeySecret:</label
-            >
+            <label for="akey" class="col-sm-4 control-label">
+              <span class="red">*</span> AccessKeySecret:</label>
             <div class="col-sm-8">
               <input
                 type="password"
@@ -191,9 +212,7 @@
             class="form-group has-feedback"
             ng-class="{'has-error': !form1.stoken.$valid }"
           >
-            <label for="stoken" class="col-sm-4 control-label">
-              STS Token:</label
-            >
+            <label for="stoken" class="col-sm-4 control-label"> STS Token:</label>
             <div class="col-sm-8">
               <input
                 type="text"
@@ -219,7 +238,7 @@
                 popover-trigger="'mouseenter'"
                 popover-append-to-body="true"
               >
-                <i class="fa fa-question-circle"></i>
+                <i class="fa fa-question-circle"/>
               </span>
             </label>
             <div class="col-sm-8">
@@ -288,7 +307,7 @@
                 id="input4"
                 placeholder="{{'auth.region.placeholder'|translate}}"
                 ng-options="rg.id as ('region.'+rg.id|translate) for rg in regions"
-              ></select>
+              />
             </div>
           </div>
 
@@ -338,7 +357,7 @@
                     popover-trigger="'mouseenter'"
                     popover-append-to-body="true"
                   >
-                    <i class="fa fa-question-circle"></i>
+                    <i class="fa fa-question-circle"/>
                   </span>
                 </label>
               </div>
@@ -374,8 +393,8 @@
           ng-submit="onSubmit2(form2)"
         >
           <div class="form-group">
-            <label for="input-x" class="col-sm-3 control-label"
-              ><span class="red">*</span>
+            <label for="input-x" class="col-sm-3 control-label">
+              <span class="red">*</span>
               {{'auth.authToken'|translate}}:
               <!-- 授权码: -->
               <a
@@ -384,8 +403,8 @@
                 tooltip-append-to-body="true"
                 ng-click="openURL('https://github.com/aliyun/oss-browser/blob/master/docs/authToken.md')"
               >
-                <i class="fa fa-question-circle"></i></a
-            ></label>
+                <i class="fa fa-question-circle"></i></a>
+            </label>
             <div class="col-sm-9">
               <textarea
                 required
@@ -417,10 +436,7 @@
                 }},
                 <!-- (有效期至{{authTokenInfo.expiration|timeFormat}},  -->
                 {{'auth.authToken.info.leftTime'|translate}}:
-                <my-timer
-                  class="text-warning"
-                  expiration="authTokenInfo.expiration"
-                ></my-timer>
+                <my-timer class="text-warning" expiration="authTokenInfo.expiration"/>
                 )
               </small>
             </div>
@@ -478,9 +494,7 @@
         <td>{{h.desc}}</td>
         <td>
           <a href="" ng-click="useHis(h)">{{'use'|translate}}</a> |
-          <a href="" ng-click="showRemoveHis(h)" class="text-danger"
-            >{{'delete'|translate}}</a
-          >
+          <a href="" ng-click="showRemoveHis(h)" class="text-danger">{{'delete'|translate}}</a>
         </td>
       </tr>
     </table>

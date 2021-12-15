@@ -43,7 +43,7 @@ angular.module('web').factory('AuthInfo', [
       var arr = get(AUTH_HIS, []);
 
       for (var i = 0; i < arr.length; i++) {
-        if (arr[i].id == obj.id) {
+        if (arr[i].id === obj.id) {
           arr.splice(i, 1);
           i--;
         }
@@ -56,7 +56,7 @@ angular.module('web').factory('AuthInfo', [
       var arr = get(AUTH_HIS, []);
 
       for (var i = 0; i < arr.length; i++) {
-        if (arr[i].id == id) {
+        if (arr[i].id === id) {
           arr.splice(i, 1);
           i--;
         }

@@ -11,17 +11,17 @@ angular.module('web').controller('loginCtrl', [
   'Toast',
   'Cipher',
   'settingsSvs',
-  function(
-      $scope,
-      _$rootScope,
-      $translate,
-      Auth,
-      AuthInfo,
-      $timeout,
-      $location,
-      Const,
-      Dialog,
-      Toast
+  function (
+    $scope,
+    _$rootScope,
+    $translate,
+    Auth,
+    AuthInfo,
+    $timeout,
+    $location,
+    Const,
+    Dialog,
+    Toast
   ) {
     var DEF_EP_TPL = 'http://{region}.aliyuncs.com';
 
@@ -66,16 +66,16 @@ angular.module('web').controller('loginCtrl', [
       eptplChange: eptplChange
     });
 
-    $scope.$watch('item.eptpl', function(v) {
+    $scope.$watch('item.eptpl', function (v) {
       $scope.eptplType =
         v.indexOf('{region}.aliyuncs.com') !== -1 ? 'default' : 'customize';
     });
 
-    $scope.$watch('gtab', function(v) {
+    $scope.$watch('gtab', function (v) {
       localStorage.setItem('gtag', v);
     });
 
-    $scope.$watch('item.cname', function(v) {
+    $scope.$watch('item.cname', function (v) {
       console.log('cname: ' + v);
 
       if (v) {
@@ -87,13 +87,13 @@ angular.module('web').controller('loginCtrl', [
       $scope.eptplType = t;
 
       // console.log(t);
-      if (t == 'default') {
+      if (t === 'default') {
         $scope.item.eptpl = DEF_EP_TPL;
         $scope.item.cname = false;
-      } else if (t == 'customize') {
+      } else if (t === 'customize') {
         $scope.item.cname = false;
         $scope.item.eptpl = '';
-      } else if (t == 'cname') {
+      } else if (t === 'cname') {
         $scope.item.cname = true;
         $scope.item.eptplcname = '';
       }
@@ -107,7 +107,7 @@ angular.module('web').controller('loginCtrl', [
 
     function authTokenChange() {
       $timeout.cancel(tid);
-      tid = $timeout(function() {
+      tid = $timeout(function () {
         var authToken = $scope.item.authToken || '';
 
         localStorage.setItem(KEY_AUTHTOKEN, authToken);
@@ -141,9 +141,7 @@ angular.module('web').controller('loginCtrl', [
 
             $scope.authTokenInfo = info;
 
-            $scope.authTokenInfo.expirationStr = moment(
-                new Date(info.expiration)
-            ).format('YYYY-MM-DD HH:mm:ss');
+            $scope.authTokenInfo.expirationStr = moment(new Date(info.expiration)).format('YYYY-MM-DD HH:mm:ss');
           } else if (info.id && info.secret && !info.id.startsWith('STS.')) {
             // 子用户ak
             $scope.authTokenInfo = info;
@@ -163,11 +161,9 @@ angular.module('web').controller('loginCtrl', [
     function init() {
       $scope.flags.remember = localStorage.getItem(KEY_REMEMBER) || 'NO';
       $scope.flags.showHis = localStorage.getItem(SHOW_HIS) || 'NO';
-      $scope.flags.keepLoggedIn =
-        localStorage.getItem(KEEP_ME_LOGGED_IN) || 'YES';
+      $scope.flags.keepLoggedIn = localStorage.getItem(KEEP_ME_LOGGED_IN) || 'YES';
       // requestPay状态
-      $scope.flags.requestpaystatus =
-        localStorage.getItem(SHOW_REQUEST_PAY) || 'NO';
+      $scope.flags.requestpaystatus = localStorage.getItem(SHOW_REQUEST_PAY) || 'NO';
 
       // 是否使用https
       $scope.flags.secure = localStorage.getItem(SHOW_SECURE) || 'YES';
@@ -185,7 +181,7 @@ angular.module('web').controller('loginCtrl', [
       listHistories();
 
       $scope.$watch('flags.remember', function(v) {
-        if (v == 'NO') {
+        if (v === 'NO') {
           AuthInfo.unremember();
           localStorage.setItem(KEY_REMEMBER, 'NO');
         }
@@ -295,16 +291,21 @@ angular.module('web').controller('loginCtrl', [
       data.secure = localStorage.getItem(SHOW_SECURE) || 'YES';
 
       // trim password
-      if (data.secret) { data.secret = data.secret.trim(); }
+      if (data.secret) {
+        data.secret = data.secret.trim();
+      }
+      if (data.dsecret) {
+        data.dsecret = data.dsecret.trim();
+      }
 
       delete data.authToken;
       delete data.securityToken;
 
-      if (data.id.indexOf('STS.') != 0) {
+      if (data.id.indexOf('STS.') !== 0) {
         delete data.stoken;
       }
 
-      if ($scope.flags.remember == 'YES') {
+      if ($scope.flags.remember === 'YES') {
         AuthInfo.remember(
             Object.assign(data, {
               eptplType: $scope.eptplType
@@ -326,7 +327,9 @@ angular.module('web').controller('loginCtrl', [
               }
             }
 
-            if ($scope.flags.remember == 'YES') { AuthInfo.addToHistories(data); }
+          if ($scope.flags.remember === 'YES') {
+            AuthInfo.addToHistories(data);
+          }
 
             Toast.success(T('login.successfully'), 1000);
             $location.url('/');

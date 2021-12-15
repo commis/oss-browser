@@ -20,12 +20,12 @@ angular.module('web').factory('Auth', [
 
       data.httpOptions = { timeout: 15000 };
 
-      if (data.id.indexOf('STS.') != 0) {
+      if (data.id.indexOf('STS.') !== 0) {
         delete data.stoken;
       }
 
       $rootScope.internalSupported = data.eptpl
-        ? data.eptpl.indexOf('-internal') != -1
+        ? data.eptpl.indexOf('-internal') !== -1
         : false;
 
       if (data.osspath) {
@@ -33,32 +33,30 @@ angular.module('web').factory('Auth', [
 
         data.bucket = info.bucket;
 
-        ossSvs2
-            .getClient2(data)
-            .listV2({
-              prefix: info.key,
-              'max-keys': 1,
-              delimiter: '/'
-            })
-            .then((result) => {
-              if (result.keyCount !== '0') {
+        ossSvs2.getClient2(data).listV2({
+          prefix: info.key,
+          'max-keys': 1,
+          delimiter: '/'
+        })
+          .then((result) => {
+            if (result.keyCount !== '0') {
               // 登录成功
-                AuthInfo.save(data);
-                df.resolve();
-              } else {
-                df.reject({
-                  code: 'Error',
-                  message: T('login.endpoint.error')
-                }); // '请确定Endpoint是否正确'
-              }
-            })
-            ['catch']((err) => {
-              df.reject(err);
-            });
+              AuthInfo.save(data);
+              df.resolve();
+            } else {
+              df.reject({
+                code: 'Error',
+                message: T('login.endpoint.error')
+              }); // '请确定Endpoint是否正确'
+            }
+          })
+          ['catch']((err) => {
+          df.reject(err);
+        });
       } else {
         ossSvs2.getClient(data).listBuckets(function(err, result) {
           if (err) {
-            if (err.code == 'AccessDeniedError') {
+            if (err.code === 'AccessDeniedError') {
               // 登录成功
               AuthInfo.save(data);
               df.resolve();
