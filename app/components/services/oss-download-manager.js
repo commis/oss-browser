@@ -318,6 +318,8 @@ angular.module('web').factory('ossDownloadManager', [
       // stsToken
       if (auth.stoken && auth.id.indexOf('STS.') == 0) {
         var store = new OssStore({
+          deviceId: auth.did,
+          deviceSecret: auth.dsecret,
           stsToken: {
             Credentials: {
               AccessKeyId: auth.id,
@@ -334,6 +336,8 @@ angular.module('web').factory('ossDownloadManager', [
         });
       } else {
         var store = new OssStore({
+          deviceId: auth.did,
+          deviceSecret: auth.dsecret,
           aliyunCredential: {
             accessKeyId: auth.id,
             secretAccessKey: auth.secret

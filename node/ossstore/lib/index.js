@@ -44,6 +44,8 @@ function OssStore(config) {
 
   if (this._config.stsToken) {
     this.oss = new ALYD.OSS({
+      deviceId: this._config.deviceId,
+      deviceSecret: this._config.deviceSecret,
       accessKeyId: this._config.stsToken.Credentials.AccessKeyId,
       secretAccessKey: this._config.stsToken.Credentials.AccessKeySecret,
       securityToken: this._config.stsToken.Credentials.SecurityToken,
@@ -58,6 +60,8 @@ function OssStore(config) {
         localStorage.getItem("show-request-pay") === "YES" ? true : false,
     });
     this.aliOSS = new OSS({
+      deviceId: this._config.deviceId,
+      deviceSecret: this._config.deviceSecret,
       accessKeyId: this._config.stsToken.Credentials.AccessKeyId,
       accessKeySecret: this._config.stsToken.Credentials.AccessKeySecret,
       stsToken: this._config.stsToken.Credentials.SecurityToken,
@@ -69,6 +73,8 @@ function OssStore(config) {
     });
   } else {
     this.oss = new ALYD.OSS({
+      deviceId: this._config.deviceId,
+      deviceSecret: this._config.deviceSecret,
       accessKeyId: this._config.aliyunCredential.accessKeyId,
       secretAccessKey: this._config.aliyunCredential.secretAccessKey,
       endpoint: this._config.endpoint,
@@ -82,6 +88,8 @@ function OssStore(config) {
         localStorage.getItem("show-request-pay") === "YES" ? true : false,
     });
     this.aliOSS = new OSS({
+      deviceId: this._config.deviceId,
+      deviceSecret: this._config.deviceSecret,
       accessKeyId: this._config.aliyunCredential.accessKeyId,
       accessKeySecret: this._config.aliyunCredential.secretAccessKey,
       endpoint: this._config.endpoint,
@@ -107,6 +115,8 @@ OssStore.prototype.setStsToken = function (stsToken) {
   this._config.stsToken = stsToken;
 
   this.oss = new ALYD.OSS({
+    deviceId: this._config.deviceId,
+    deviceSecret: this._config.deviceSecret,
     accessKeyId: this._config.stsToken.Credentials.AccessKeyId,
     secretAccessKey: this._config.stsToken.Credentials.AccessKeySecret,
     securityToken: this._config.stsToken.Credentials.SecurityToken,
